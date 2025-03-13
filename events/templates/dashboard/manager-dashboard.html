@@ -1,0 +1,90 @@
+{% extends "dashboard/dashboard.html" %}
+{% block title %}Event-Managment{% endblock title %}
+{% block events %} {% load static %}
+
+<section class="relative my-6">
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img 
+          src="{% static 'images/10.gif' %}" 
+          alt="Event 1" 
+          class="w-full h-64 object-cover rounded-lg"
+        />
+      </div>
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <!-- Search Bar Positioned in the Center of Image -->
+  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 bg-opacity-75 p-6 rounded-lg shadow-lg">
+    <div class="flex flex-col items-center space-y-4">
+      <div class="flex space-x-4 w-full max-w-xl">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search Events..."
+          class="p-3 w-full border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-gray-600 bg-gray-800 text-white"
+        />
+        <button
+          onclick="filterEvents()"
+          class="bg-gray-600 text-white px-6 py-3 rounded-r-lg hover:bg-gray-700 focus:outline-none"
+        >
+          Search
+        </button>
+      </div>
+      <div class="flex space-x-4 w-full max-w-xl">
+        <input
+          type="date"
+          id="startDate"
+          class="p-3 w-1/3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 bg-gray-800 text-white"
+        />
+        <input
+          type="date"
+          id="endDate"
+          class="p-3 w-1/3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 bg-gray-800 text-white"
+        />
+        <select 
+          id="categoryFilter" 
+          class="p-3 w-1/3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-600 bg-gray-800 text-white"
+        >
+          <option value="">All Categories</option>
+          
+            <option value=''>category.name</option>
+          
+        </select>
+      </div>
+      <button
+        onclick="filterEvents()"
+        class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 focus:outline-none"
+      >
+        Apply Filters
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Event Overview Section -->
+<section class="my-8">
+  <div class="container mx-auto">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Upcoming Events</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for task in tasks  %}
+        <div 
+          class="event bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 border border-gray-200"
+          data-date="{{ emv.date }}"
+        >
+          <h3 class="text-2xl text-gray-900 font-extrabold mb-2">title: {{task.title}} </h3>
+          {% comment %} <p class="text-lg text-gray-700 font-medium"><strong>📍 Location:</strong> location </p> {% endcomment %}
+          <p class="text-lg text-gray-700 font-medium"><strong>⏰ Time:</strong> {{ task.created_at}} </p>
+          {% comment %} <p class="text-lg text-gray-600 mt-3"><strong>📅 Date:</strong>  emv.date </p> {% endcomment %}
+        </div>
+        
+        {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock events %}

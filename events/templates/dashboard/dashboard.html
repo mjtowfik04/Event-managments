@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    {% comment %} <script src="https://cdn.tailwindcss.com"></script> {% endcomment %}
+
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body class="bg-black text-white">
+    <!-- Navbar -->
+    <nav class="bg-gray-900 p-4 text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href=""><div class="text-2xl font-semibold">Event Manager</div></a>
+            <ul class="flex space-x-6">
+                <li><a href="{% url 'manager-dashboard' %}" class="hover:text-gray-400">Home</a></li>
+                <li><a href="{% url 'user-dashboard' %}" class="hover:text-gray-400">Dashboard</a></li>
+                <li><a href="#" class="hover:text-gray-400">Manage</a></li>
+                <li><a href="#" class="hover:text-gray-400">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Image Slider with Search Bar -->
+    {% block events %}
+
+    {% endblock events  %}
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-10">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center px-6 space-y-6 md:space-y-0">
+            <div class="text-center md:text-left">
+                <h3 class="text-xl font-semibold mb-3">About Us</h3>
+                <p class="text-gray-400 max-w-sm"></p>
+            </div>
+            <div class="text-center">
+                <h3 class="text-xl font-semibold mb-3">Contact Info</h3>
+                <p class="text-gray-400">📍 123, Event Street, Dhaka, Bangladesh</p>
+                <p class="text-gray-400">📞 +880 1234 567 890</p>
+                <p class="text-gray-400">✉️ info@eventmanager.com</p>
+            </div>
+            <div class="text-center md:text-right">
+                <h3 class="text-xl font-semibold mb-3">Follow Us</h3>
+                <div class="flex justify-center md:justify-end space-x-4 text-2xl">
+                    <a href="#" class="hover:text-gray-400"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="hover:text-gray-400"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="hover:text-gray-400"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center text-gray-400 mt-8 border-t border-gray-700 pt-4">
+            <p>&copy; 2025 Event Manager. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        function filterEvents() {
+            let searchQuery = document.getElementById("searchInput").value.toLowerCase();
+            let startDate = document.getElementById("startDate").value;
+            let endDate = document.getElementById("endDate").value;
+            let events = document.querySelectorAll(".event");
+            events.forEach(event => {
+                let eventDate = event.getAttribute("data-date");
+                let eventTitle = event.querySelector("h3").innerText.toLowerCase();
+                let isVisible = (!searchQuery || eventTitle.includes(searchQuery)) && (!startDate || eventDate >= startDate) && (!endDate || eventDate <= endDate);
+                event.style.display = isVisible ? "block" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
