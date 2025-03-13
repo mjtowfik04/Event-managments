@@ -37,7 +37,6 @@ ALLOWED_HOSTS = ['event-managments-qbb7.onrender.com']
 CSRF_TRUSTED_ORIGINS=['https://*.onrender.com','http://127.0.0.1:8000']
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
