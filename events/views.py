@@ -5,11 +5,21 @@ from events.models import Participant, Event, EventDetail, Project
 from datetime import date
 from django.db.models import Q, Count, Max, Min, Avg
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+from users.views import is_admin
+
+
+
+def is_manager(user):
+    return user.groups.filter(name='Manager').exists()
+
+def is_employee(user):
+    return user.groups.filter(name='Employee').exists()
 
 
 # Create your views here.
 
-
+# @user_passes_test(is_manager, login_url='no-permission')
 def manager_dashboard(request):
 
 
@@ -43,7 +53,7 @@ def manager_dashboard(request):
     }
     return render(request, "dashboard/manager-dashboard.html", context)
 
-
+# @user_passes_test(is_employee)
 def user_dashboard(request):
     type = request.GET.get('type', 'all')
 
@@ -76,7 +86,7 @@ def user_dashboard(request):
     # return render(request, "dashboard/manager-dashboard.html", context)
     return render(request, "dashboard/user-dashboard.html",context)
 
-
+@permission_required("events.add_event", login_url='no-permission')
 def create_task(request):
     task_form = EventModelForm()  
     task_detail_form = EventDetailModelForm()
@@ -100,6 +110,8 @@ def create_task(request):
     return render(request, "task_form.html", context)
 
 
+@login_required
+@permission_required("events.change_event", login_url='no-permission')
 def update_task(request, id):
     task = Event.objects.get(id=id)
     task_form = EventModelForm(instance=task)  
@@ -126,6 +138,8 @@ def update_task(request, id):
     return render(request, "task_form.html", context)
 
 
+@login_required
+@permission_required("events.delete_event", login_url='no-permission')
 def delete_task(request, id):
     if request.method == 'POST':
         task = Event.objects.get(id=id)
@@ -136,8 +150,24 @@ def delete_task(request, id):
         messages.error(request, 'Something went wrong')
         return redirect('manager-dashboard')
 
+@login_required
 
 def view_task(request):
     projects =Project.objects.annotate(
         num_task=Count('task')).order_by('num_task')
     return render(request, "show_task.html", {"projects": projects})
+
+
+
+
+
+@login_required
+def dashboard(request):
+    if is_manager(request.user):
+        return redirect('manager-dashboard')
+    elif is_employee(request.user):
+        return redirect('user-dashboard')
+    elif is_admin(request.user):
+        return redirect('admin-dashboard')
+
+    return redirect('no-permission')
