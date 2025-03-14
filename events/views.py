@@ -7,6 +7,8 @@ from django.db.models import Q, Count, Max, Min, Avg
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from users.views import is_admin
+from django.views.generic.list import ListView
+
 
 
 
@@ -151,14 +153,21 @@ def delete_task(request, id):
         return redirect('manager-dashboard')
 
 @login_required
-
 def view_task(request):
     projects =Project.objects.annotate(
         num_task=Count('task')).order_by('num_task')
     return render(request, "show_task.html", {"projects": projects})
 
-
-
+# class ViewProject(ListView):
+#     model=Project
+#     context_object_name='projects'
+#     template_name='show_task.html'
+#     def get_queryset(self):
+       
+#        queryset =Project.objects.annotate(
+#        num_task=Count('task')).order_by('num_task')
+#        return queryset
+    
 
 
 @login_required
