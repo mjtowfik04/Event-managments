@@ -90,7 +90,6 @@ def user_dashboard(request):
 def create_task(request):
     task_form = EventModelForm()  
     task_detail_form = EventDetailModelForm()
-
     if request.method == "POST":
         task_form = EventModelForm(request.POST)
         task_detail_form = EventDetailModelForm(request.POST)
