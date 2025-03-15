@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from events.forms import EventForm, EventModelForm,EventDetailModelForm
-from events.models import Participant, Event, EventDetail, Project
+from events.models import  Event, EventDetail, Project
 from datetime import date
 from django.db.models import Q, Count, Max, Min, Avg
 from django.contrib import messages

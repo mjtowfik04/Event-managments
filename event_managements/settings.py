@@ -13,12 +13,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import dj_database_url
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://event_manager_bd_user:SWgs8NWHLPz5m1bGdrbNTxo4Q2EpNEur@dpg-cv9icmogph6c73e95n40-a.oregon-postgres.render.com/event_manager_bd',conn_max_age=600)
-}
-
-
 
 
 
@@ -93,6 +87,18 @@ WSGI_APPLICATION = 'event_managements.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgresql://event_manager_bd_7e15_user:2QsKAy65BK1oaXW6zXSvtzNmPfbnZLMH@dpg-cvat8b5umphs73aimj8g-a.oregon-postgres.render.com/event_manager_bd_7e15',conn_max_age=600)
+}
+
+
+
+
+
+
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -135,6 +141,17 @@ USE_I18N = True
 USE_TZ = True
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mjtowfik659672@gmail.com'
+EMAIL_HOST_PASSWORD ='almc achi vzyu copc'
+
+
+
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -148,3 +165,13 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS=[
     BASE_DIR / 'static',
 ]
+
+
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+FRONTEND_URL = 'http://127.0.0.1:8000'
+
+LOGIN_URL = '/users/sign-in/'
+LOGIN_REDIRECT_URL = '/events/manager-dashboard/'
+LOGOUT_REDIRECT_URL = '/'
