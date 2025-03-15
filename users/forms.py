@@ -1,9 +1,13 @@
 from django import forms
 import re
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User, Permission, Group
+from django.contrib.auth.models import Permission, Group
 from events.forms import StyledFormMixin
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
+from users.models import CustomUser
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class RegisterForm(UserCreationForm):
@@ -44,20 +48,20 @@ class CustomRegistrationForm(StyledFormMixin, forms.ModelForm):
         if len(password1) < 8:
             errors.append('Password must be at least 8 character long')
 
-        # if not re.search(r'[A-Z]', password1):
-        #     errors.append(
-        #         'Password must include at least one uppercase letter.')
+        if not re.search(r'[A-Z]', password1):
+            errors.append(
+                'Password must include at least one uppercase letter.')
 
-        # if not re.search(r'[a-z]', password1):
-        #     errors.append(
-        #         'Password must include at least one lowercase letter.')
+        if not re.search(r'[a-z]', password1):
+            errors.append(
+                'Password must include at least one lowercase letter.')
 
-        # if not re.search(r'[0-9]', password1):
-        #     errors.append('Password must include at least one number.')
+        if not re.search(r'[0-9]', password1):
+            errors.append('Password must include at least one number.')
 
-        # if not re.search(r'[@#$%^&+=]', password1):
-        #     errors.append(
-        #         'Password must include at least one special character.')
+        if not re.search(r'[@#$%^&+=]', password1):
+            errors.append(
+                'Password must include at least one special character.')
 
         if errors:
             raise forms.ValidationError(errors)
@@ -85,7 +89,8 @@ class AssignRoleForm(StyledFormMixin, forms.Form):
         queryset=Group.objects.all(),
         empty_label="Select a Role"
     )
-    
+
+
 class CreateGroupForm(StyledFormMixin, forms.ModelForm):
     permissions = forms.ModelMultipleChoiceField(
         queryset=Permission.objects.all(),
@@ -93,7 +98,64 @@ class CreateGroupForm(StyledFormMixin, forms.ModelForm):
         required=False,
         label='Assign Permission'
     )
-    
+
     class Meta:
         model = Group
         fields = ['name', 'permissions']
+
+
+class CustomPasswordChangeForm(StyledFormMixin, PasswordChangeForm):
+    pass
+
+
+class CustomPasswordResetForm(StyledFormMixin, PasswordResetForm):
+    pass
+
+
+class CustomPasswordResetConfirmForm(StyledFormMixin, SetPasswordForm):
+    pass
+
+
+"""
+class EditProfileForm(StyledFormMixin, forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'last_name']
+
+    bio = forms.CharField(required=False, widget=forms.Textarea, label='Bio')
+    profile_image = forms.ImageField(required=False, label='Profile Image')
+
+    def __init__(self, *args, **kwargs):
+        self.userprofile = kwargs.pop('userprofile', None)
+        super().__init__(*args, **kwargs)
+        print("forms", self.userprofile)
+
+        # Todo: Handle Error
+
+        if self.userprofile:
+            self.fields['bio'].initial = self.userprofile.bio
+            self.fields['profile_image'].initial = self.userprofile.profile_image
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        # Save userProfile jodi thake
+        if self.userprofile:
+            self.userprofile.bio = self.cleaned_data.get('bio')
+            self.userprofile.profile_image = self.cleaned_data.get(
+                'profile_image')
+
+            if commit:
+                self.userprofile.save()
+
+        if commit:
+            user.save()
+
+        return user
+"""
+
+
+class EditProfileForm(StyledFormMixin, forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'first_name', 'last_name', 'bio', 'profile_image']

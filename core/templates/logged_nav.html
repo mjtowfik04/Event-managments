@@ -24,13 +24,9 @@
           <div class="relative">
             <button
               id="user-menu-button"
-              class="flex items-center focus:outline-none"
+              class="flex items-center focus:outline-none text-black"
             >
-              <img
-                class="h-8 w-8 rounded-full object-cover"
-                src="https://placekitten.com/100/100"
-                alt="User avatar"
-              />
+             B
             </button>
             <div
               id="user-menu"
@@ -41,6 +37,11 @@
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >Dashboard</a
               >
+              <a
+              href="{% url 'profile' %}"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >Profile</a
+            >
               <form method="post" action="{% url 'logout' %}">
                   {% csrf_token %}
                 <button
