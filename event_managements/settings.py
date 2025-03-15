@@ -13,16 +13,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import dj_database_url
 
-<<<<<<< HEAD
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='postgresql://event_manager_bd_user:SWgs8NWHLPz5m1bGdrbNTxo4Q2EpNEur@dpg-cv9icmogph6c73e95n40-a.oregon-postgres.render.com/event_manager_bd',conn_max_age=600)
-# }
-
-
-=======
->>>>>>> mid
-
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
